@@ -110,14 +110,21 @@
           <div>
               <iframe src="https://www.youtube.com/embed/${video}"></iframe>
           </div>
+<<<<<<< 61d998f10fd7284c8b14b528a3c929419d7ff8d2
           <p style="text-align:justify;" id="descMovie"> ${movie.overview} </p>
+=======
+          <p style="text-align:justify;"> ${movie.overview} </p>
+>>>>>>> first commit
           <div>
           <span> release date : ${movie.release_date} </span> 
           <span> rating :  ${movie.vote_average} </span>
           <span>  </span>
           <span> Durasi :  ${Number(movie.runtime) / 60 } </span>
+<<<<<<< 61d998f10fd7284c8b14b528a3c929419d7ff8d2
           <button onclick="tranlateIndonesia('${movie.overview}')" type="button" class="btn btn-secondary">Indonesia</button>
           <button onclick="tranlateEnglish('${movie.overview}')" type="button" class="btn btn-secondary">English</button>
+=======
+>>>>>>> first commit
           <button type="button" class="btn btn-secondary">Similar Enter-10</button>
           </div>
         </div>
@@ -130,6 +137,7 @@
     })
   }
 
+<<<<<<< 61d998f10fd7284c8b14b528a3c929419d7ff8d2
    function tranlateIndonesia (text) {
       $.ajax({
         url: `http://localhost:3000/movies/translate/in`,
@@ -164,6 +172,8 @@
       })  
     }
 
+=======
+>>>>>>> first commit
   function getUrlVars() {
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -173,10 +183,17 @@
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
     }
+<<<<<<< 61d998f10fd7284c8b14b528a3c929419d7ff8d2
     // console.log(vars)
   }
   getUrlVars()
   
+=======
+    console.log(vars)
+  }
+
+  getUrlVars()
+>>>>>>> first commit
 
 </script>
 
