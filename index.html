@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id" content="247654206570-5loe4b45mkd7rgugeojh2d4bdpu5kc5q.apps.googleusercontent.com">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>MovieDB</title>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
     crossorigin="anonymous">
 </head>
@@ -32,7 +34,8 @@
           </li>
         </ul>
         <span class="my-2 my-lg-0">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+          <div id="gbutton" class="g-signin2" data-onsuccess="onSignIn"></div>
+          <button class="btn btn-outline-success my-2 my-sm-0" id="logoutb" onclick="logout()" type="submit">Logout</button>
         </span>
       </div>
     </nav>
@@ -57,7 +60,7 @@
 
   <!-- Large modal -->
 
-  <div class="modal fade readMoreModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal fade readMoreModal" id="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -82,9 +85,12 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
+
+
 </body>
 
 <script>
+
   function loadDataMovie(){
     $.ajax({
       url: `https://api.themoviedb.org/3/movie/top_rated?api_key=967c05f63e07b1f325db0d1d608827dd&language=en-US&page=1`,
@@ -103,17 +109,19 @@
           
           <div class="card-body">
             <h5 class="card-title">${movie[i].title}</h5>
+
             <p>Release date : ${movie[i].release_date}</p>
             <button onclick="getIdMovie('${movie[i].id}')" type="button" class="btn btn-primary" data-toggle="modal" data-target=".readMoreModal">Large modal</button>
           </div>
         </div>
       </div>
         `)
+        // active()
       }
     })
     .fail((err) => {})
   }
-
+  $("#actionModalMovie").hide();
   loadDataMovie()
 
   function getIdMovie(movieId) {
@@ -147,7 +155,7 @@
           <span> Durasi :  ${Number(movie.runtime) / 60 } </span>
           <button onclick="tranlateIndonesia('${movie.overview}')" type="button" class="btn btn-secondary">Indonesia</button>
           <button onclick="tranlateEnglish('${movie.overview}')" type="button" class="btn btn-secondary">English</button>
-          <button type="button" class="btn btn-secondary">Similar Enter-10</button>
+          <button type="button" class="btn btn-secondary" onclick="getsimilar('${movie.title}')">Similar Enter-10</button>
           </div>
         </div>
         `)
@@ -159,7 +167,51 @@
     })
   }
 
-  function tranlateIndonesia (text) {
+  
+  function getsimilar(name){
+
+      // $('#modal').hide();
+      
+
+      $.ajax({
+      url: `http://localhost:3000/movies/similar`,
+      method: `post`,
+      data:{
+          name:name
+      }
+    })
+    .done((response) => {
+      $('modal').modal('hide')
+      let data=response.data.Similar.Results
+    
+          $('#movieCollection').text('')
+          $('#movieCollection').html(`<br><h1>ENTER-10 LIKE ${name} : </h1><br>`).css("padding",50)
+          for(let i = 0; i < data.length; i++){
+            $('#movieCollection').append(`
+            <br><br>
+            <div class="col-sm" id="boxMovie">
+            <div class="card" style="width: 30rem;">
+              <iframe src=${data[i].yUrl}></iframe>
+              <div class="card-body">
+                <h5 class="card-title">${data[i].Name}</h5>
+                <p>Entertainment Type : ${data[i].Type}</p>
+                <p align=justify>Description : ${data[i].wTeaser.slice(1,50)}</p>
+                <br>
+                <a href=${data[i].wUrl}>Link to Wikipedia</a>
+              </div>
+            </div>
+          </div>
+            `)
+          }
+    })
+    .fail((err) => {})    
+      
+  }
+
+
+   function tranlateIndonesia (text) {
+      
+    
       $.ajax({
         url: `http://localhost:3000/movies/translate/in`,
         method: `post`,
@@ -262,6 +314,48 @@
     
   })
 
+  function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        var id_token = googleUser.getAuthResponse().id_token;
+        
+        $.ajax({
+              method: 'POST',
+              url: 'http://localhost:3000/users/signinGoogle',
+              data: {
+                data:id_token
+              }
+        }).then(data=>{
+          localStorage.setItem('data',data.token)
+          // active()
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+  }
+
+
+   function logout(){
+    
+      localStorage.removeItem('data')
+      active()
+   }
+
+  //  function active(){
+  //       let state=localStorage.getItem('data')
+        
+  //       if(state){
+  //         $("#actionModalMovie").hide();
+  //         $("#gbutton").hide();
+  //         $("#logoutb").show();
+  //       }
+  //       else{
+  //         $("#logoutb").hide();
+  //         $("#actionModalMovie").hide();
+  //         $("#gbutton").show();
+  //       }
+  //   }
+
+  //  active()
 
   // $("#btnNext").click(function () {
     // console.log()

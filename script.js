@@ -81,6 +81,7 @@
 
     })
   }
+
   function getsimilar(name){
 
     $.ajax({
