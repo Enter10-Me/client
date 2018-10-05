@@ -1,9 +1,14 @@
 $(document).ready(function(){
     // console.log('teststststststst')
-    alert('halo halo halo')
     showArchive()
-    
-    $('#list').text('testtttttttttt')
+
+    $("#searchanime").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".polaroid").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+        console.log(value)
+    });
 })
 
 
@@ -67,13 +72,20 @@ function search(){
 
         for(let i = 0 ; i < data.anime.length ; i ++){
             // console.log(data.anime[i])
-            $('#listAnime').append(`
-            <div class="mybox" onclick="showAnime(${data.anime[i].mal_id})">
-            <h5>${data.anime[i].title}</h5>
-            <img src="${data.anime[i].image_url}" width="150px">
-            </div>
-            `)
-            
+            // console.log(data.anime[i])
+            if(data.anime[i].score > 7){
+
+                $('#listAnime').append(`
+                <div class="polaroid" onclick="showAnime(${data.anime[i].mal_id})">
+                  <img src="${data.anime[i].image_url}" alt="5 Terre" style="width:100%">
+                  <div class="container">
+                    <p>${data.anime[i].title}</p>
+                  </div>
+                </div>
+                
+                `)
+            }
+    
         }
     })
     .fail(err=>{
@@ -81,7 +93,28 @@ function search(){
     })  
 }
 
+
+
+// $('#listAnime').append(`
+//                 <div class="mybox" onclick="showAnime(${data.anime[i].mal_id})">
+//                 <h5>${data.anime[i].title}</h5>
+//                 <img src="${data.anime[i].image_url}" width="150px">
+//                 </div>
+//                 `)
+
+
+// $('#listAnime').append(`
+//                 <div class="gallery" onclick="showAnime(${data.anime[i].mal_id})">
+//                 <a>
+//                 <img src="${data.anime[i].image_url}" width="300" height="200">
+//                 </a>
+//                 <div class="desc">${data.anime[i].title}</div>
+//                 </div>
+//                 `)
+
+
 function showAnime(id){
+    console.log('masuk ke show anime')
     $('#showAnime').empty()
 
     $.ajax({
@@ -92,6 +125,7 @@ function showAnime(id){
         console.log(data)
         $('#showAnime').empty()
         $('#showAnime').append(`
+        <center>
         <h1>${data.title}<h1>
         <h2>${data.title_japanese}</h2>
         <iframe width="420" height="315"
@@ -100,6 +134,7 @@ function showAnime(id){
         <p><b>Score :</b> ${data.score}</p>
         <p><b>Rating :</b> ${data.rating}</p>
         <p>${data.synopsis}</p>
+        </center>
         `)
     })
     .fail(err=>{
@@ -108,15 +143,12 @@ function showAnime(id){
 }
 
 /*
-duration: "24 min per ep",
-rating: "R - 17+ (violence & profanity)",
-score: 8.81,
-scored_by: 385971,
-rank: 27,
-popularity: 38,
-members: 752025,
-favorites: 41395,
-synopsis:
+<div class="gallery">
+  <a target="_blank" href="forest.jpg">
+    <img src="forest.jpg" alt="Forest" width="300" height="200">
+  </a>
+  <div class="desc">Add a description of the image here</div>
+</div>
 */
 
 

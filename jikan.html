@@ -7,19 +7,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
     <style>
-        * {
+        * 
+        {
             box-sizing: border-box;
         }
-        
+
+        /* body {margin:25px;} */
+
+        div.polaroid:hover{
+        cursor: pointer;
+        }
+
+        div.polaroid {
+          width: 95%;
+          background-color: white;
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          margin-bottom: 25px;
+        }
+
+        div.container {
+          text-align: center;
+          padding: 10px 20px;
+        }
+
         /* Create three equal columns that floats next to each other */
         .mybox {
           border: 3px solid rgb(3, 3, 3) ;
-          height: 50px,
+          margin-top : 10px;
+          margin-bottom : 10px;
         } 
         
         .column {
             float: left;
-            width: 33.33%;
+            width: 30%;
+            padding: 10px;
+            min-height: 450px;
+        }
+
+        .column2 {
+            float: left;
+            width: 70%;
+            padding: 10px;
+            min-height: 450px;
+        }
+
+        .column3 {
+            float: left;
+            width: 100%;
             padding: 10px;
             min-height: 450px;
         }
@@ -86,23 +120,30 @@
             float: none;
           }
         }
+
+        body {background-color: #bbb;}
         </style>
 </head>
 <body>
 <div class="main-menu">
   <div class="row">
     <div class="column" style="background-color:#aaa;">
-      <h2>Archive</h2>
+      <h2>Anime Archive</h2>
       <select id="list"></select>
       <select id="listSeason"></select>
       <button id="search" onclick="search()">Sort</button>
-      <h2><div id="listAnime"></div></h2>  
+      <br>
+      <br>
+      <form>
+      <label>search</label>
+      <input id='searchanime'></input>
+      <br>
+      </form>
+      <h2><div id="listAnime"></div></h2>
+      
     </div>
-    <div class="column" style="background-color:#bbb;">
+    <div class="column2" style="background-color:#bbb;">
     <div id="showAnime"></div>
-    </div>
-    <div class="column" style="background-color:#ccc;">
-    </div>
   </div>
 </div>
     
