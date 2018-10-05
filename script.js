@@ -82,50 +82,46 @@
     })
   }
 
+  function getsimilar(name){
+
+    $.ajax({
+    url: `http://localhost:3000/movies/similar`,
+    method: `post`,
+    data:{
+        name:name
+    }
+      })
+      .done((response) => {
+        $('modal').modal('hide')
+        let data=response.data.Similar.Results
+
+            $('#musicCollection').text('')
+            $('#musicCollection').html(`<br><h1>ENTER-10 LIKE ${name} : </h1><br><br>`).css("padding",50)
+            for(let i = 0; i < data.length; i++){
+              $('#musicCollection').append(`
+              <br><br>
+              <div class="col-sm" id="boxMovie">
+              <div class="card" style="width: 30rem;">
+                <iframe src=${data[i].yUrl}></iframe>
+                <div class="card-body">
+                  <h5 class="card-title">${data[i].Name}</h5>
+                  <p>Entertainment Type : ${data[i].Type}</p>
+                  <p align=justify>Description : ${data[i].wTeaser.slice(1,50)}</p>
+                  <br>
+                  <a href=${data[i].wUrl}>Link to Wikipedia</a>
+                </div>
+              </div>
+            </div>
+              `)
+            }
+  })
+  .fail((err) => {})
+
+}
+
 //   $( "#myInput" ).keyup(function() {
 //       alert( "Handler for .keyup() called." );
 //     });
-
-  function getsimilar(name){
-
-  // $('#modal').hide();
-  
-
-      $.ajax({
-      url: `http://localhost:3000/movies/similar`,
-      method: `post`,
-      data:{
-          name:name
-      }
-        })
-        .done((response) => {
-          $('modal').modal('hide')
-          let data=response.data.Similar.Results
-
-              $('#musicCollection').text('')
-              $('#musicCollection').html(`<br><h1>ENTER-10 LIKE ${name} : </h1><br><br>`).css("padding",50)
-              for(let i = 0; i < data.length; i++){
-                $('#musicCollection').append(`
-                <br><br>
-                <div class="col-sm" id="boxMovie">
-                <div class="card" style="width: 30rem;">
-                  <iframe src=${data[i].yUrl}></iframe>
-                  <div class="card-body">
-                    <h5 class="card-title">${data[i].Name}</h5>
-                    <p>Entertainment Type : ${data[i].Type}</p>
-                    <p align=justify>Description : ${data[i].wTeaser.slice(1,50)}</p>
-                    <br>
-                    <a href=${data[i].wUrl}>Link to Wikipedia</a>
-                  </div>
-                </div>
-              </div>
-                `)
-              }
-    })
-    .fail((err) => {})    
-  
-  }
-
   function searchRepo(){
     $("#myInput").on("keyup", function() {
       var value = $("#myInput").val();
