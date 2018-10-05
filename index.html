@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MovieDB</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+</head>
+
+<style>
+  #boxMovie {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <div class="row" id="movieCollection">
+
+    </div>
+  </div>
+
+  <!-- Large modal -->
+
+  <div class="modal fade readMoreModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="detailMovie">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+</body>
+
+<script>
+  function loadDataMovie(){
+    $.ajax({
+      url: `https://api.themoviedb.org/3/movie/top_rated?api_key=967c05f63e07b1f325db0d1d608827dd&language=en-US&page=1`,
+      method: `get`
+    })
+    .done((response) => {
+
+      let movie = response.results
+     
+      $('#movieCollection').text('')
+      for(let i = 0; i < movie.length; i++){
+        $('#movieCollection').append(`
+        <div class="col-sm" id="boxMovie">
+        <div class="card" style="width: 14rem;">
+          <img class="card-img-top" src="http://image.tmdb.org/t/p/w300${movie[i].poster_path}" alt="Card image cap">
+          
+          <div class="card-body">
+            <h5 class="card-title">${movie[i].title}</h5>
+            <p>Release date : ${movie[i].release_date}</p>
+            <button onclick="getIdMovie('${movie[i].id}')" type="button" class="btn btn-primary" data-toggle="modal" data-target=".readMoreModal">Large modal</button>
+          </div>
+        </div>
+      </div>
+        `)
+      }
+    })
+    .fail((err) => {})
+  }
+
+  loadDataMovie()
+
+  function getIdMovie(movieId) {
+
+    $.ajax({
+      url: `http://api.themoviedb.org/3/movie/${movieId}?api_key=967c05f63e07b1f325db0d1d608827dd&&language=en-US`,
+      method: `get`
+    })
+    .done((movie) => {
+
+      $.ajax({
+      url: `http://api.themoviedb.org/3/movie/${movieId}/videos?api_key=967c05f63e07b1f325db0d1d608827dd&language=en-US`,
+      method: `get`
+      })
+      .done((response) => {
+        let video = response.results[0].key
+
+        $('#detailMovie').text('')
+
+        $('#detailMovie').append(`
+        <div>
+          <h1>${movie.title}</h1>
+          <div>
+              <iframe src="https://www.youtube.com/embed/${video}"></iframe>
+          </div>
+          <p style="text-align:justify;"> ${movie.overview} </p>
+          <div>
+          <span> release date : ${movie.release_date} </span> 
+          <span> rating :  ${movie.vote_average} </span>
+          <span>  </span>
+          <span> Durasi :  ${Number(movie.runtime) / 60 } </span>
+          <button type="button" class="btn btn-secondary">Similar Enter-10</button>
+          </div>
+        </div>
+        `)
+      })
+      
+    })
+    .fail((err) => {
+
+    })
+  }
+
+  function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    console.log(vars)
+  }
+
+  getUrlVars()
+
+</script>
+
+</html>
