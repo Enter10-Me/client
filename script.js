@@ -7,7 +7,11 @@
 
       let music = response
       let topArtist = music.artists.artist
+<<<<<<< HEAD
       // console.log(topArtist)
+=======
+      console.log(topArtist)
+>>>>>>> 2b24b3f9f0faf4394b6973f3de39488acffbf830
       $('#musicCollection').text('')
       for(let i = 0; i < topArtist.length; i++){
         $('#musicCollection').append(`
@@ -45,7 +49,11 @@
             console.log(response)
             let music = response
             let topArtist = music.artist
+<<<<<<< HEAD
             // console.log(topArtist, 'ini getArtistInfo' + artistName)
+=======
+            console.log(topArtist, 'ini getArtistInfo' + artistName)
+>>>>>>> 2b24b3f9f0faf4394b6973f3de39488acffbf830
     
             let tag = []
             topArtist.tags.tag.forEach(list => {
@@ -100,6 +108,7 @@
             //   console.log(topArtist)
               $('#musicCollection').text('')
               for(let i = 0; i < topArtist.length; i++){
+<<<<<<< HEAD
                 let img = './img/empty.jpeg'
                 if(topArtist[i].image[2]['#text']){
                   img = topArtist[i].image[2]['#text']
@@ -111,6 +120,12 @@
                 <div class="col-sm" id="boxMusic">
                 <div class="card" style="width: 14rem;">
                   <img class="card-img-top" src="${img}" alt="Card image cap">
+=======
+                $('#musicCollection').append(`
+                <div class="col-sm" id="boxMusic">
+                <div class="card" style="width: 14rem;">
+                  <img class="card-img-top" src="${topArtist[i].image[2]['#text']}" alt="Card image cap">
+>>>>>>> 2b24b3f9f0faf4394b6973f3de39488acffbf830
                   
                   <div class="card-body">
                     <h5 class="card-title">${topArtist[i].name}</h5>
