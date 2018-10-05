@@ -110,12 +110,14 @@
           <div>
               <iframe src="https://www.youtube.com/embed/${video}"></iframe>
           </div>
-          <p style="text-align:justify;"> ${movie.overview} </p>
+          <p style="text-align:justify;" id="descMovie"> ${movie.overview} </p>
           <div>
           <span> release date : ${movie.release_date} </span> 
           <span> rating :  ${movie.vote_average} </span>
           <span>  </span>
           <span> Durasi :  ${Number(movie.runtime) / 60 } </span>
+          <button onclick="tranlateIndonesia('${movie.overview}')" type="button" class="btn btn-secondary">Indonesia</button>
+          <button onclick="tranlateEnglish('${movie.overview}')" type="button" class="btn btn-secondary">English</button>
           <button type="button" class="btn btn-secondary">Similar Enter-10</button>
           </div>
         </div>
@@ -128,6 +130,40 @@
     })
   }
 
+   function tranlateIndonesia (text) {
+      $.ajax({
+        url: `http://localhost:3000/movies/translate/in`,
+        method: `post`,
+        data : {
+          text
+        }
+      })
+      .done((response) => {
+        $("#descMovie").text('')
+        $("#descMovie").text(response.message.translatedText)
+      })
+      .fail((err) => {
+        console.log(err)
+      })  
+    }
+
+    function tranlateEnglish (text) {
+      $.ajax({
+        url: `http://localhost:3000/movies/translate/en`,
+        method: `post`,
+        data : {
+          text
+        }
+      })
+      .done((response) => {
+        $("#descMovie").text('')
+        $("#descMovie").text(response.message.translatedText)
+      })
+      .fail((err) => {
+        console.log(err)
+      })  
+    }
+
   function getUrlVars() {
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -137,10 +173,10 @@
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
     }
-    console.log(vars)
+    // console.log(vars)
   }
-
   getUrlVars()
+  
 
 </script>
 
