@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id" content="247654206570-5loe4b45mkd7rgugeojh2d4bdpu5kc5q.apps.googleusercontent.com">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>MovieDB</title>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
     crossorigin="anonymous">
 </head>
@@ -32,7 +34,8 @@
           </li>
         </ul>
         <span class="my-2 my-lg-0">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+          <div id="gbutton" class="g-signin2" data-onsuccess="onSignIn"></div>
+          <button class="btn btn-outline-success my-2 my-sm-0" id="logoutb" onclick="logout()" type="submit">Logout</button>
         </span>
       </div>
     </nav>
@@ -82,9 +85,12 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
+
+
 </body>
 
 <script>
+
   function loadDataMovie(){
     $.ajax({
       url: `https://api.themoviedb.org/3/movie/top_rated?api_key=967c05f63e07b1f325db0d1d608827dd&language=en-US&page=1`,
@@ -105,16 +111,17 @@
             <h5 class="card-title">${movie[i].title}</h5>
             <p>Release date : </p>
             <p>${movie[i].release_date}</p>
-            <button onclick="getIdMovie('${movie[i].id}')" type="button" class="btn btn-primary" data-toggle="modal" data-target=".readMoreModal">Large modal</button>
+            <button  id="actionModalMovie" onclick="getIdMovie('${movie[i].id}')" type="button" class="btn btn-primary" data-toggle="modal" data-target=".readMoreModal">Open Detail</button>
           </div>
         </div>
       </div>
         `)
+        // active()
       }
     })
     .fail((err) => {})
   }
-
+  $("#actionModalMovie").hide();
   loadDataMovie()
 
   function getIdMovie(movieId) {
@@ -160,7 +167,8 @@
     })
   }
 
-    function getsimilar(name){
+  
+  function getsimilar(name){
 
       // $('#modal').hide();
       
@@ -306,6 +314,48 @@
     
   })
 
+  function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        var id_token = googleUser.getAuthResponse().id_token;
+        
+        $.ajax({
+              method: 'POST',
+              url: 'http://localhost:3000/users/signinGoogle',
+              data: {
+                data:id_token
+              }
+        }).then(data=>{
+          localStorage.setItem('data',data.token)
+          // active()
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+  }
+
+
+   function logout(){
+    
+      localStorage.removeItem('data')
+      active()
+   }
+
+  //  function active(){
+  //       let state=localStorage.getItem('data')
+        
+  //       if(state){
+  //         $("#actionModalMovie").hide();
+  //         $("#gbutton").hide();
+  //         $("#logoutb").show();
+  //       }
+  //       else{
+  //         $("#logoutb").hide();
+  //         $("#actionModalMovie").hide();
+  //         $("#gbutton").show();
+  //       }
+  //   }
+
+  //  active()
 
   // $("#btnNext").click(function () {
     // console.log()
