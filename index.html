@@ -26,7 +26,7 @@
 
   <!-- Large modal -->
 
-  <div class="modal fade readMoreModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal fade readMoreModal" id="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -118,7 +118,7 @@
           <span> Durasi :  ${Number(movie.runtime) / 60 } </span>
           <button onclick="tranlateIndonesia('${movie.overview}')" type="button" class="btn btn-secondary">Indonesia</button>
           <button onclick="tranlateEnglish('${movie.overview}')" type="button" class="btn btn-secondary">English</button>
-          <button type="button" class="btn btn-secondary">Similar Enter-10</button>
+          <button type="button" class="btn btn-secondary" onclick="getsimilar('${movie.title}')">Similar Enter-10</button>
           </div>
         </div>
         `)
@@ -130,7 +130,50 @@
     })
   }
 
+    function getsimilar(name){
+
+      // $('#modal').hide();
+      
+
+      $.ajax({
+      url: `http://localhost:3000/movies/similar`,
+      method: `post`,
+      data:{
+          name:name
+      }
+    })
+    .done((response) => {
+      $('modal').modal('hide')
+      let data=response.data.Similar.Results
+    
+          $('#movieCollection').text('')
+          $('#movieCollection').html(`<br><h1>ENTER-10 LIKE ${name} : </h1><br>`).css("padding",50)
+          for(let i = 0; i < data.length; i++){
+            $('#movieCollection').append(`
+            <br><br>
+            <div class="col-sm" id="boxMovie">
+            <div class="card" style="width: 30rem;">
+              <iframe src=${data[i].yUrl}></iframe>
+              <div class="card-body">
+                <h5 class="card-title">${data[i].Name}</h5>
+                <p>Entertainment Type : ${data[i].Type}</p>
+                <p align=justify>Description : ${data[i].wTeaser.slice(1,50)}</p>
+                <br>
+                <a href=${data[i].wUrl}>Link to Wikipedia</a>
+              </div>
+            </div>
+          </div>
+            `)
+          }
+    })
+    .fail((err) => {})    
+      
+  }
+
+
    function tranlateIndonesia (text) {
+      
+    
       $.ajax({
         url: `http://localhost:3000/movies/translate/in`,
         method: `post`,
