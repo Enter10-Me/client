@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-signin-client_id" content="247654206570-5loe4b45mkd7rgugeojh2d4bdpu5kc5q.apps.googleusercontent.com">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="196184982638-ld52a4693dest6f343llmd86i85ula1q.apps.googleusercontent.com">
+  <title>MovieDB</title>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<style>
+  #boxMovie {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+</style>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand">Enter10-Me</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" id="partMovie">Movie <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link">Anime <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link">Music <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+<<<<<<< HEAD
+<<<<<<< HEAD
+        <span class="my-2 my-lg-0">
+          <div id="gbutton" class="g-signin2" data-onsuccess="onSignIn"></div>
+          <button class="btn btn-outline-success my-2 my-sm-0" id="logoutb" onclick="logout()" type="submit">Logout</button>
+=======
+        <span class="my-2 my-lg-0" id="btnLogin">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+>>>>>>> client login, search movie
+=======
+        <span class="my-2 my-lg-0" id="btnLogin">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+>>>>>>> 7894db7e6a8bd24a8f940f072c3b59e6993850da
+        </span>
+
+        <span class="my-2 my-lg-0" id="btnLogout">
+            <a onclick="signOut();" style="background-color: aqua; padding: 12px; border-radius: 5px; cursor: pointer;">Sign out</a>
+        </span>  
+      </div>
+    </nav>
+  
+  <div class="container">
+
+    <div style="margin-bottom: 20px;">
+      <button class="btnPrev">Previous</button>
+      <button class="btnNext">Next</button>
+    </div>
+
+    <div class="my-2 my-lg-0">
+        <input placeholder="movie title" aria-label="Search" id="inputTitle">
+        <button onclick="searchByTitle()" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Movie</button>
+    </div>
+
+    <div class="row" id="movieCollection">
+
+    </div>
+
+    <div>
+      <button class="btnPrev">Previous</button>
+      <button class="btnNext">Next</button>
+    </div>
+
+  </div>
+
+  <!-- Large modal -->
+
+  <div class="modal fade readMoreModal" id="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="titleMovie">Detail Movie</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="detailMovie">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+
+  <script src="./js/moviedb.js"></script>
+
+</body>
+</html>
